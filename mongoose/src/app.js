@@ -48,7 +48,7 @@ const createDocument = async () => {
       name: "NodeJs",
       type: "Back-End",
       videos: 8,
-      author: "Mani",
+      author: "nima",
       active: true,
     });
 
@@ -68,7 +68,7 @@ const createDocument = async () => {
 const getDocument = async () => {
   try {
     const result = await Playlist
-      .find({ type: {$nin: ["Back-End"]} })
+      .find({$or : [{type: "Back-End"},{author: "mani"}] })
       .select({ name: 1, _id: 0 })
       // .limit(1);
     console.log(result);
@@ -77,4 +77,28 @@ const getDocument = async () => {
   }
 };
 
-getDocument();
+// getDocument();
+
+
+const updateDocument = async () => {
+  try {
+    const result = await Playlist.updateOne({type:"front-End"},{$set: {type:"Full-Stack"}} );
+    console.log(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+// updateDocument()
+
+const deleteDocument = async () => {
+  try {
+    const result = await Playlist.deleteMany({});
+    console.log(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// deleteDocument()
