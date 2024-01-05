@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const validator = require("validator")
+
 
 // connection creation and creation a new db
 mongoose
@@ -23,7 +25,7 @@ const playlistSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["frontend", "backend", "database"],
+    // enum: ["frontend", "backend", "database"],
   },
   videos: {
     type: Number,
@@ -39,6 +41,16 @@ const playlistSchema = new mongoose.Schema({
     },
   },
   author: String,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate(value){
+    if (!validator.isEmail(value)) {
+      throw new Error ("Invalide Email")
+    }
+    }
+  },
   active: Boolean,
   date: {
     type: Date,
@@ -81,6 +93,8 @@ const createDocument = async () => {
       type: "database",
       videos: 48,
       author: "nima",
+      // email: "nniMA1487@go",
+      email: "nima1487@gmail.com",
       active: true,
     });
 
