@@ -25,7 +25,14 @@ const playlistSchema = new mongoose.Schema({
     required: true,
     enum: ["frontend", "backend", "database"],
   },
-  videos: Number,
+  videos: {
+  type : Number,
+  validate(value){
+    if(value<0){
+      throw new Error("Videos count should not be negative")
+    }
+  }
+  },
   author: String,
   active: Boolean,
   date: {
@@ -66,8 +73,8 @@ const createDocument = async () => {
 
     const mongoosePlaylist = new Playlist({
       name: "      MonGOose  Js     ",
-      type: "DB",
-      videos: 1487,
+      type: "database",
+      videos: -148,
       author: "nima",
       active: true,
     });
@@ -100,7 +107,7 @@ const getDocument = async () => {
   }
 };
 
-getDocument();
+// getDocument();
 
 const updateDocument = async () => {
   try {
