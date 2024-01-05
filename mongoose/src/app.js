@@ -11,8 +11,20 @@ mongoose
   });
 
 const playlistSchema = new mongoose.Schema({
-  name: String,
-  type: String,
+  name: {
+    type: String,
+    required: true,
+    lowercase: true,
+    // uppercase: true
+    trim: true,
+    minlength: [2, "Minimun 2 cherector require"],
+    maxlength: 41,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ["frontend", "backend", "database"],
+  },
   videos: Number,
   author: String,
   active: Boolean,
@@ -52,10 +64,19 @@ const createDocument = async () => {
       active: true,
     });
 
+    const mongoosePlaylist = new Playlist({
+      name: "      MonGOose  Js     ",
+      type: "DB",
+      videos: 1487,
+      author: "nima",
+      active: true,
+    });
+
     const result = await Playlist.insertMany([
-      jsPlaylist,
-      mongoPlaylist,
-      expressPlaylist,
+      // jsPlaylist,
+      // mongoPlaylist,
+      // expressPlaylist,
+      mongoosePlaylist,
     ]);
     console.log(result);
   } catch (err) {
@@ -63,42 +84,47 @@ const createDocument = async () => {
   }
 };
 
-// createDocument();
+createDocument();
 
 const getDocument = async () => {
   try {
     const result = await Playlist
-      .find({$or : [{type: "Back-End"},{author: "mani"}] })
+      // .find({$or : [{type: "Back-End"},{author: "mani"}] })
+      .find({ author: "Mani" })
       .select({ name: 1, _id: 0 })
-      // .limit(1);
+      .sort({ name: -1 }); // . countDocuments();
+    // .limit(1);
     console.log(result);
   } catch (err) {
     console.log(err);
   }
 };
 
-// getDocument();
-
+getDocument();
 
 const updateDocument = async () => {
   try {
-    const result = await Playlist.updateOne({type:"front-End"},{$set: {type:"Full-Stack"}} );
-    console.log(result)
+    const result = await Playlist.updateOne(
+      { type: "front-End" },
+      { $set: { type: "Full-Stack" } }
+    );
+    console.log(result);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-
-// updateDocument()
+updateDocument();
 
 const deleteDocument = async () => {
   try {
     const result = await Playlist.deleteMany({});
-    console.log(result)
+    console.log(result);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 // deleteDocument()
+
+// Validation in  MogoDB
