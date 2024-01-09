@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const validator = require("validator")
-
+const validator = require("validator");
 
 // connection creation and creation a new db
 mongoose
@@ -45,11 +44,11 @@ const playlistSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validate(value){
-    if (!validator.isEmail(value)) {
-      throw new Error ("Invalide Email")
-    }
-    }
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error("Invalide Email");
+      }
+    },
   },
   active: Boolean,
   date: {
@@ -140,7 +139,7 @@ const updateDocument = async () => {
   }
 };
 
-updateDocument();
+// updateDocument();
 
 const deleteDocument = async () => {
   try {
