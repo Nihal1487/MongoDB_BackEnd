@@ -5,7 +5,7 @@ const studentSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlenngth: 3,
+    minlength: 3,
   },
   email: {
     type: String,
@@ -20,7 +20,7 @@ const studentSchema = new mongoose.Schema({
   phone: {
     type: Number,
     // min: 10,
-    // max: 20,
+    // max: 10,
     required: true,
     unique: true,
   },
