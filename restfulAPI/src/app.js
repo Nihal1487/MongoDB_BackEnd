@@ -31,24 +31,35 @@ app.post("/students", async (req, res) => {
 });
 // read the data for ragistered Studennts
 
-app.get("/students/:name", async(req,res) => {
-      try {
-  // const studentsData =  await  Student.find()
-  // res.send(studentsData)
-  const name  = req.params.name
- const studentdata =   await  Student.find({name})
+app.get("/students/:name", async (req, res) => {
+  try {
+    // const studentsData =  await  Student.find()
+    // res.send(studentsData)
+    const name = req.params.name;
+    const studentdata = await Student.find({ name });
 
- if (!studentdata) {
-  return res.status(404).send
- }else{
-  res.send(studentdata)
- }
-} catch (e) {
-        res.status(401).send(e)
-      }
-})
+    if (!studentdata) {
+      return res.status(404).send;
+    } else {
+      res.send(studentdata);
+    }
+  } catch (e) {
+    res.status(401).send(e);
+  }
+});
 
+// update the studennts by its id
 
+app.patch("/students/:id",async(req,res) => {
+  try {
+    const _id = req.params.id;
+    const updateStudent = await Student.findByIdAndUpdate(_id,req.body, {new: true })
+
+    res.send(updateStudent)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+} )
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
