@@ -50,16 +50,32 @@ app.get("/students/:name", async (req, res) => {
 
 // update the studennts by its id
 
-app.patch("/students/:id",async(req,res) => {
+app.patch("/students/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const updateStudent = await Student.findByIdAndUpdate(_id,req.body, {new: true })
+    const updateStudent = await Student.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
 
-    res.send(updateStudent)
+    res.send(updateStudent);
   } catch (e) {
-    res.status(400).send(e)
+    res.status(400).send(e);
   }
-} )
+});
+
+// delete the studennts by its id
+
+app.delete("/students/:id", async (req, res) => {
+  try {
+    const deleteStudentnn = await Student.findByIdAndDelete(req.params.id);
+    if (!req.params.id) {
+      return res.status(400).send();
+    }
+    res.send(deleteStudentnn);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
