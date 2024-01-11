@@ -29,6 +29,26 @@ app.post("/students", async (req, res) => {
     res.status(400).send(e);
   }
 });
+// read the data for ragistered Studennts
+
+app.get("/students/:name", async(req,res) => {
+      try {
+  // const studentsData =  await  Student.find()
+  // res.send(studentsData)
+  const name  = req.params.name
+ const studentdata =   await  Student.find({name})
+
+ if (!studentdata) {
+  return res.status(404).send
+ }else{
+  res.send(studentdata)
+ }
+} catch (e) {
+        res.status(401).send(e)
+      }
+})
+
+
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
