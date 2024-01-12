@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "mongoose": "^8.0.3"
+    "mongoose": "^8.0.3",
+    "validator": "^13.11.0"
   },
   "name": "src",
   "version": "1.0.0",
   "main": "app.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
