@@ -11,18 +11,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // app.use(userRouter)
 
-
 const static_path = path.join(__dirname, "../public");
 const template_path = path.join(__dirname, "../templates/views");
 const partials_path = path.join(__dirname, "../templates/partials");
 
-app.use(express.static(static_path));
+// app.use(express.static(static_path));
 
 app.set("view engine", "hbs");
 app.set("views", template_path);
 hbs.registerPartials(partials_path);
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.render("index");
 });
 
@@ -30,10 +29,13 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
 app.post("/register", async (req, res) => {
   try {
-   
-    const password =  req.body.password
+    const password = req.body.password;
 
     if (password) {
       const newUser = new User({
@@ -45,12 +47,30 @@ app.post("/register", async (req, res) => {
       const registered = await newUser.save();
       console.log(registered);
       res.status(201).render("index");
-    }else{
-      res.send("Enter a password")
+    } else {
+      res.send("Enter a password");
     }
-   
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+// log in check
+
+app.post("/login", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const userEmail = await User.findOne({ email: email });
+
+    if (userEmail.password === password) {
+      res.status(201).render("index");
+    } else {
+      res.send("Invalid email or password");
+    }
+  } catch (error) {
+    res.status(400).send("Invalid email or password");
   }
 });
 
