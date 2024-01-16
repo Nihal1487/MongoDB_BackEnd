@@ -5,6 +5,7 @@ const hbs = require("hbs");
 const port = process.env.PORT || 8000;
 const db = require("./db/conn.js");
 const User = require("./models/registers.js");
+const bcrypt = require("bcrypt");
 // const userRouter = require("./router/router.js")
 
 app.use(express.json());
@@ -66,8 +67,9 @@ app.post("/login", async (req, res) => {
     const password = req.body.password;
 
     const userEmail = await User.findOne({ email: email });
+    const isMatch = await bcrypt.compare(password, userEmail.password)
 
-    if (userEmail.password === password) {
+    if (isMatch) {
       res.status(201).render("index");
     } else {
       res.send("Invalid email or password");
@@ -77,7 +79,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// const bcrypt = require("bcrypt");
+
 
 // const securePassword = async (password) => {
 //   const passwordHash = await bcrypt.hash(password, 10);
