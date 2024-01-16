@@ -44,6 +44,9 @@ app.post("/register", async (req, res) => {
         password: req.body.password,
         gender: req.body.gender,
       });
+
+      // password hash is added onn model file
+
       const registered = await newUser.save();
       console.log(registered);
       res.status(201).render("index");
