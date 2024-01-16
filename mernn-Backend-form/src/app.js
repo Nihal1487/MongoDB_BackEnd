@@ -74,6 +74,18 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// const bcrypt = require("bcrypt");
+
+// const securePassword = async (password) => {
+//   const passwordHash = await bcrypt.hash(password, 10);
+//   console.log(passwordHash);
+
+//   const passwordmatch = await bcrypt.compare(password, passwordHash);
+//   console.log(passwordmatch);
+// };
+
+// securePassword("1569");
+
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
 });
