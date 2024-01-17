@@ -34,50 +34,50 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.post("/register", async (req, res) => {
-  try {
-    const password = req.body.password;
+// app.post("/register", async (req, res) => {
+//   try {
+//     const password = req.body.password;
 
-    if (password) {
-      const newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        gender: req.body.gender,
-      });
+//     if (password) {
+//       const newUser = new User({
+//         username: req.body.username,
+//         email: req.body.email,
+//         password: req.body.password,
+//         gender: req.body.gender,
+//       });
 
-      // password hash is added onn model file
+//       // password hash is added onn model file
 
-      const registered = await newUser.save();
-      console.log(registered);
-      res.status(201).render("index");
-    } else {
-      res.send("Enter a password");
-    }
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
+//       const registered = await newUser.save();
+//       console.log(registered);
+//       res.status(201).render("index");
+//     } else {
+//       res.send("Enter a password");
+//     }
+//   } catch (e) {
+//     res.status(400).send(e);
+//   }
+// });
 
-// log in check
+// // log in check
 
-app.post("/login", async (req, res) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
+// app.post("/login", async (req, res) => {
+//   try {
+//     const email = req.body.email;
+//     const password = req.body.password;
 
-    const userEmail = await User.findOne({ email: email });
-    const isMatch = await bcrypt.compare(password, userEmail.password)
+//     const userEmail = await User.findOne({ email: email });
+//     const isMatch = await bcrypt.compare(password, userEmail.password)
 
-    if (isMatch) {
-      res.status(201).render("index");
-    } else {
-      res.send("Invalid email or password");
-    }
-  } catch (error) {
-    res.status(400).send("Invalid email or password");
-  }
-});
+//     if (isMatch) {
+//       res.status(201).render("index");
+//     } else {
+//       res.send("Invalid email or password");
+//     }
+//   } catch (error) {
+//     res.status(400).send("Invalid email or password");
+//   }
+// });
 
 
 
@@ -90,6 +90,25 @@ app.post("/login", async (req, res) => {
 // };
 
 // securePassword("1569");
+
+
+
+const jwt = require("jsonwebtoken")
+
+
+// createTokenn
+
+const createToken = async () =>{
+  const token = await   jwt.sign({_id:"65a1375458cdbb1ae016e743"},"qwuehdcujeuifjrugiwifififujetguewjdj3ejdieidi3ekdjkejdjejdejd", {expiresIn: "2 seconds" })
+  console.log(token);
+
+  const userVerify =  jwt.verify(token,"qwuehdcujeuifjrugiwifififujetguewjdj3ejdieidi3ekdjkejdjejdejd")
+
+  console.log(userVerify);
+}
+
+createToken()
+
 
 app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
