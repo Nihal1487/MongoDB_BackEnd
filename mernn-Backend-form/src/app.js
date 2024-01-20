@@ -71,6 +71,10 @@ app.post("/login", async (req, res) => {
     const userEmail = await User.findOne({ email: email });
     const isMatch = await bcrypt.compare(password, userEmail.password);
 
+    const token = await userEmail.gTokenn();
+    console.log("the token part  " + token);
+
+
     if (isMatch) {
       res.status(201).render("index");
     } else {
