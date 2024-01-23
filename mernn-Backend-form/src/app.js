@@ -83,7 +83,14 @@ app.post("/login", async (req, res) => {
     const token = await userEmail.gTokenn();
     console.log("the token part  " + token);
    
+     
+    res.cookie("jwt", token , {
+      expires: new Date(Date.now() + 30000),
+      httpOnly: true
+     })
    
+   
+
     if (isMatch) {
       res.status(201).render("index");
     } else {
