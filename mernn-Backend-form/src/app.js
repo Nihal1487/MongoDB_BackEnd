@@ -51,6 +51,14 @@ app.post("/register", async (req, res) => {
       const token = await newUser.gTokenn();
       console.log("the token part  " + token);
 
+    // cookie
+ 
+     res.cookie("jwt", token , {
+      expires: new Date(Date.now() + 30000),
+      httpOnly: true
+     })
+    console.log(cookie);
+
       const registered = await newUser.save();
       console.log(registered);
       res.status(201).render("index");
@@ -74,8 +82,8 @@ app.post("/login", async (req, res) => {
 
     const token = await userEmail.gTokenn();
     console.log("the token part  " + token);
-
-
+   
+   
     if (isMatch) {
       res.status(201).render("index");
     } else {
