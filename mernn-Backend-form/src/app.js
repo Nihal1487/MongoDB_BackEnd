@@ -8,9 +8,11 @@ const db = require("./db/conn.js");
 const User = require("./models/registers.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser")
 // const userRouter = require("./router/router.js")
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }));
 // app.use(userRouter)
 
@@ -26,6 +28,11 @@ hbs.registerPartials(partials_path);
 
 app.get("/home", (req, res) => {
   res.render("index");
+});
+
+app.get("/secret", (req, res) => {
+  console.log(`this is the cookie ${req.cookies.jwt}`);
+  res.render("secret");
 });
 
 app.get("/register", (req, res) => {
@@ -57,7 +64,7 @@ app.post("/register", async (req, res) => {
       expires: new Date(Date.now() + 30000),
       httpOnly: true
      })
-    console.log(cookie);
+    
 
       const registered = await newUser.save();
       console.log(registered);
@@ -85,11 +92,11 @@ app.post("/login", async (req, res) => {
    
      
     res.cookie("jwt", token , {
-      expires: new Date(Date.now() + 30000),
+      expires: new Date(Date.now() + 60000),
       httpOnly: true
      })
    
-   
+ 
 
     if (isMatch) {
       res.status(201).render("index");
