@@ -9,6 +9,7 @@ const User = require("./models/registers.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
+const auth = require("./middleware/auth.js")
 // const userRouter = require("./router/router.js")
 
 app.use(express.json());
@@ -30,8 +31,8 @@ app.get("/home", (req, res) => {
   res.render("index");
 });
 
-app.get("/secret", (req, res) => {
-  console.log(`this is the cookie ${req.cookies.jwt}`);
+app.get("/secret", auth,  (req, res) => {
+  // console.log(`this is the cookie ${req.cookies.jwt}`);
   res.render("secret");
 });
 
