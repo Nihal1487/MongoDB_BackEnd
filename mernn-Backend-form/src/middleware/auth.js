@@ -9,6 +9,13 @@ const auth = async (req, res, next) => {
 
     const user = await User.findOne({ _id: verifyUser._id });
     console.log(user.email);
+  
+  req.token = token
+  req.user = user
+  
+  
+  
+  
     next();
   } catch (error) {
     res.status(401).send(error);

@@ -36,6 +36,21 @@ app.get("/secret", auth,  (req, res) => {
   res.render("secret");
 });
 
+app.get("/logout", auth, async(req,res) => {
+
+try {
+  res.clearCookie("jwt")
+  console.log("Logout successfull");
+  
+await req.user.save()
+res.render("login")
+
+} catch (error) {
+  res.send(error)
+}
+
+} )  
+
 app.get("/register", (req, res) => {
   res.render("register");
 });
