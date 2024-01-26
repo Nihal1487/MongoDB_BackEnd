@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -8,12 +8,12 @@ const db = require("./db/conn.js");
 const User = require("./models/registers.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser")
-const auth = require("./middleware/auth.js")
+const cookieParser = require("cookie-parser");
+const auth = require("./middleware/auth.js");
 // const userRouter = require("./router/router.js")
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 // app.use(userRouter)
 
@@ -31,25 +31,26 @@ app.get("/home", (req, res) => {
   res.render("index");
 });
 
-app.get("/secret", auth,  (req, res) => {
+app.get("/secret", auth, (req, res) => {
   // console.log(`this is the cookie ${req.cookies.jwt}`);
   res.render("secret");
 });
 
-app.get("/logout", auth, async(req,res) => {
+app.get("/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((currentElement) => {
+      return currentElement.token !== req.token;
+    });
 
-try {
-  res.clearCookie("jwt")
-  console.log("Logout successfull");
-  
-await req.user.save()
-res.render("login")
+    res.clearCookie("jwt");
+    console.log("Logout successfull");
 
-} catch (error) {
-  res.send(error)
-}
-
-} )  
+    await req.user.save();
+    res.render("login");
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 app.get("/register", (req, res) => {
   res.render("register");
@@ -74,13 +75,12 @@ app.post("/register", async (req, res) => {
       const token = await newUser.gTokenn();
       console.log("the token part  " + token);
 
-    // cookie
- 
-     res.cookie("jwt", token , {
-      expires: new Date(Date.now() + 30000),
-      httpOnly: true
-     })
-    
+      // cookie
+
+      res.cookie("jwt", token, {
+        expires: new Date(Date.now() + 30000),
+        httpOnly: true,
+      });
 
       const registered = await newUser.save();
       console.log(registered);
@@ -105,14 +105,11 @@ app.post("/login", async (req, res) => {
 
     const token = await userEmail.gTokenn();
     console.log("the token part  " + token);
-   
-     
-    res.cookie("jwt", token , {
+
+    res.cookie("jwt", token, {
       expires: new Date(Date.now() + 60000),
-      httpOnly: true
-     })
-   
- 
+      httpOnly: true,
+    });
 
     if (isMatch) {
       res.status(201).render("index");
